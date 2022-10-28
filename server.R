@@ -11,7 +11,7 @@ library(shinyWidgets)
 #######################################################
 
 # Data
-df_acc_sk = read.csv("df_acc_sk.csv", encoding="UTF-8")
+df_acc_sk = read.csv("./data/df_acc_sk.csv", encoding="UTF-8")
 df_acc_sk$Dátum = as.Date(df_acc_sk$Dátum,"%d/%m/%Y")
 
 #######################################################
@@ -158,7 +158,7 @@ function(input, output) {
   
   output$frame <- renderUI({
     tags$iframe(style='width:98vw;height:90vh;',
-      src="nehody_mapa/the_map.html")
+      src="nehody_mapa/data/the_map.html")
   })
   
 }
