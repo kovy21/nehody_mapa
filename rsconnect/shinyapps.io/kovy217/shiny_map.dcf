@@ -1,0 +1,11 @@
+name: shiny_map
+title:
+username:
+account: kovy217
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6728932
+bundleId: 6449988
+url: https://kovy217.shinyapps.io/shiny_map/
+when: 1666941648.36338
+lastSyncTime: 1666941648.3634
