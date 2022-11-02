@@ -113,7 +113,7 @@ function(input, output) {
   
   output$downloadP <- downloadHandler(
     filename = function() {
-      paste("nehody-", Sys.Date(), ".xlsx", sep="")
+      paste("nehody-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
       write.csv(filter_data(), 
@@ -123,7 +123,7 @@ function(input, output) {
   
   output$downloadW <- downloadHandler(
     filename = function() {
-      paste("nehody-vsetky-", Sys.Date(), ".xlsx", sep="")
+      paste("nehody-vsetky-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
       write.csv(df_acc_sk, file)
