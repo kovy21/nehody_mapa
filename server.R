@@ -170,8 +170,8 @@ function(input, output) {
                    
                    # Highlight section
                    highlight = highlightOptions(
-                     weight = 2,
-                     fillOpacity = 0.75,
+                     weight = 7,
+                     fillOpacity = 0.5,
                      fillColor = "white",
                      bringToFront = TRUE,
                      sendToBack = TRUE),
@@ -211,8 +211,8 @@ function(input, output) {
                    
                    # Highlight section
                    highlight = highlightOptions(
-                     weight = 2,
-                     fillOpacity = 0.75,
+                     weight = 7,
+                     fillOpacity = 0.5,
                      fillColor = "white",
                      bringToFront = TRUE,
                      sendToBack = TRUE),
