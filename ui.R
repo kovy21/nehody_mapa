@@ -62,7 +62,7 @@ navbarPage(
            )   
          ),
   
-  tabPanel("Úseky",  
+  tabPanel("Úseky (I. a II. trieda)",  
            
            tags$style(type = "text/css", "html, body {width:100%;height:100%}",
                       HTML("#textt {padding-left:0.75%; padding-right:0.75%; padding-top:0.12%; padding-bottom:0.1%;font-size: 90%;}")),
