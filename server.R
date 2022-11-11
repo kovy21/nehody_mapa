@@ -3,16 +3,20 @@ library(leaflet)
 library(shiny)
 library(shinyjs)
 library(htmlwidgets)
+library(htmltools)
 library(dplyr)
 library(rsconnect)
 library(shinycssloaders)
 library(shinyWidgets)
+library(sf)
 
 #######################################################
 
 # Data
 df_acc_sk = read.csv("./data/df_acc_sk.csv", encoding="UTF-8")
 df_acc_sk$Dátum = as.Date(df_acc_sk$Dátum,"%d/%m/%Y")
+
+geo_all = st_read("./data/geo_all.json")
 
 #######################################################
 
@@ -29,6 +33,18 @@ function(input, output) {
     }
   }, ignoreNULL=FALSE)
   
+  filter_geo_all <- eventReactive(input$load_sec, {Sys.sleep(1)
+    y <- input$type_sec
+    if(y=="abs"){
+      geo_all$col = geo_all$color_raw
+      geo_all$lvl = geo_all$stupen_raw
+    }else{
+      geo_all$col = geo_all$color
+      geo_all$lvl = geo_all$stupen
+    }
+    geo_all
+  }, ignoreNULL=FALSE)
+  
   observe({output$stats <- renderText({
     paste("Dané obdobie má", 
           dim(filter_data())[1],"nehôd.") 
@@ -37,7 +53,6 @@ function(input, output) {
   output$map <- renderLeaflet({
     leaflet(df_acc_sk, options = leafletOptions(preferCanvas=TRUE,  minZoom = 8)) %>% 
       addTiles() %>%
-      # addProviderTiles(providers$CartoDB.Positron) %>%
       setView(lng = 19.65, lat = 48.675, zoom = 8) %>%
       fitBounds(~min(Zemepisná.dĺžka), ~min(Zemepisná.šírka), 
                 ~max(Zemepisná.dĺžka), ~max(Zemepisná.šírka)) %>%
@@ -51,7 +66,7 @@ function(input, output) {
       
       addLegend("bottomright", colors = c("black", "red", "yellow", "green"), 
                 labels = c("Smrteľná", "Ťažká", "Ľahká", "Bez zranení"), 
-                opacity = 1, title="Typ nehody")
+                opacity = 1, title="Typ nehody") 
     
     }
   )
@@ -111,6 +126,109 @@ function(input, output) {
   }
   )
   
+  output$sec <- renderLeaflet({
+    leaflet(geo_all, options = leafletOptions(preferCanvas=TRUE,  minZoom = 8)) %>% 
+      setView(lng = 19.65, lat = 48.675, zoom = 8) %>%
+      
+      addTiles(group="Zobrazenie OSM")  %>% 
+      addProviderTiles(providers$CartoDB.Positron, group="Zobrazenie CartoDB") %>% 
+      
+      addLayersControl(
+        baseGroups = c("Zobrazenie CartoDB", "Zobrazenie OSM"),
+        overlayGroups = c("Vysoká nehodovosť",
+                          "Nadpriemerná nehodovosť",
+                          "Priemerná nehodovosť",
+                          "Podpriemerná nehodovosť",
+                          "Nízka nehodovosť"), 
+        options = layersControlOptions(collapsed = FALSE),
+        position = 'topright') %>%
+      
+      addLegend("bottomright", colors = c("red", "#db7b2b", "#e7b416", "#99c140", "#2dc937"), 
+                labels = c("Vysoká",
+                           "Nadpriemerná",
+                           "Priemerná",
+                           "Podpriemerná",
+                           "Nízka"), 
+                opacity = 1, title="Nehodovosť úseku")   %>%
+      
+      addPolylines(color=~color_raw, smoothFactor = 2,
+                   opacity=~ifelse(road_class=="II.", 0.65, 1),
+                   weight=~ifelse(road_class=="II.", 2, 3),
+                   label=~road_info,
+                   popup = ~paste("<h4>Cesta ", road_info, "</h4>",
+                                  "<strong>Nehodovosť úseku: ",  
+                                  "<span style='color:", color_raw, ";'>", stupen_raw, "</span>", "</strong>",
+                                  "<br><strong>Začiatok úseku</strong>: ", štart, 
+                                  "<br><strong>Koniec úseku</strong>: ", koniec, 
+                                  "<br><strong>Dĺžka úseku</strong>: ", round(len_km, 2), " km",
+                                  "<br><strong>Ťažké nehody</strong>: ", heavy_acc, 
+                                  "<br><strong>Intenzita dopravy</strong>: ", format(round(rpdi,0), big.mark=" "), " voz. denne",
+                                  "<br><strong>Hustota nehôd</strong>: ", round(car_raw,2), " nehôd/km (za rok)", 
+                                  sep=""),
+                   
+                   options=popupOptions(maxWidth=200, keepInView = TRUE),
+                   
+                   # Highlight section
+                   highlight = highlightOptions(
+                     weight = 2,
+                     fillOpacity = 0.75,
+                     fillColor = "white",
+                     bringToFront = TRUE,
+                     sendToBack = TRUE),
+                   
+                   group = ~ifelse(stupen_raw == "vysoká", "Vysoká nehodovosť", # Úmrtia
+                                   ifelse(stupen_raw == "nadpriemerná", "Nadpriemerná nehodovosť",
+                                          ifelse(stupen_raw == "priemerná", "Priemerná nehodovosť", 
+                                                 ifelse(stupen_raw == "podpriemerná", "Podpriemerná nehodovosť", 
+                                                        "Nízka nehodovosť")))))
+      
+      }
+    )
+  
+  observe({
+    
+    shinyjs::showElement(id = 'loading_sec')
+    Sys.sleep(1)
+    
+    leafletProxy(mapId = "sec", data = filter_geo_all()) %>%
+      clearShapes() %>%
+      addPolylines(color=~col, smoothFactor = 2,
+                   opacity=~ifelse(road_class=="II.", 0.65, 1),
+                   weight=~ifelse(road_class=="II.", 2, 3),
+                   label=~road_info,
+                   popup = ~paste("<h4>Cesta ", road_info, "</h4>",
+                                  "<strong>Nehodovosť úseku: ",  
+                                  "<span style='color:", col, ";'>", lvl, "</span>", "</strong>",
+                                  "<br><strong>Začiatok úseku</strong>: ", štart, 
+                                  "<br><strong>Koniec úseku</strong>: ", koniec, 
+                                  "<br><strong>Dĺžka úseku</strong>: ", round(len_km, 2), " km",
+                                  "<br><strong>Ťažké nehody</strong>: ", heavy_acc, 
+                                  "<br><strong>Intenzita dopravy</strong>: ", format(round(rpdi,0), big.mark=" "), " voz. denne",
+                                  "<br><strong>Hustota nehôd</strong>: ", round(car_raw,2), " nehôd/km (za rok)", 
+                                  sep=""),
+                   
+                   options=popupOptions(maxWidth=200, keepInView = TRUE),
+                   
+                   # Highlight section
+                   highlight = highlightOptions(
+                     weight = 2,
+                     fillOpacity = 0.75,
+                     fillColor = "white",
+                     bringToFront = TRUE,
+                     sendToBack = TRUE),
+                   
+                   group = ~ifelse(lvl == "vysoká", "Vysoká nehodovosť", # Úmrtia
+                                   ifelse(lvl == "nadpriemerná", "Nadpriemerná nehodovosť",
+                                          ifelse(lvl == "priemerná", "Priemerná nehodovosť", 
+                                                 ifelse(lvl == "podpriemerná", "Podpriemerná nehodovosť", 
+                                                        "Nízka nehodovosť")))))
+    
+    
+    shinyjs::hideElement(id = 'loading_sec')
+    
+  }
+  )
+  
   output$downloadP <- downloadHandler(
     filename = function() {
       paste("nehody-", Sys.Date(), ".csv", sep="")
@@ -150,7 +268,43 @@ function(input, output) {
               a("Creative Commons Attribution", href="http://opendefinition.org/licenses/cc-by/",
                 target="_blank")),
       easyClose = TRUE,
-      footer = "Okno zavrieť kliknutím mimo"
+      footer = modalButton("Zavrieť")
+    ))
+  })
+  
+  observeEvent(input$sectionshow, {
+    showModal(modalDialog(
+      title = "Nehodovosť cestných úsekov",
+      span("Dáta o nehodovosti cestných úsekov sú vygenerované pre"),
+      strong("cesty I. a II. triedy"),
+      span("pomocou agregácie počtu dopravných nehôd pre medzikrižovatkové úseky."),
+      br(), 
+      h4("Absolútna nehodovosť"),
+      span("... je určená ako počet ťažkých nehôd na kilometer (za rok) na danom úseku"),
+      br(),
+      h4("Relatívna nehodovosť"),
+      span("... je určená pomocou tzv."), strong("critical accident rate,"),
+      tagList("počtu ťažkých dopravných nehôd na danom úseku v pomere k dopravnej intenzite daného úseku. O tejto metrike viac na:", 
+              a("SSC", href="https://www.ssc.sk/files/documents/cinnosti/vystavba%20a%20rekonstrukcia/riadenie_bezpecnosti/komplexna_analyza_dn_klasifikacia_knl.pdf",
+                target="_blank")),
+      br(),
+      tags$hr(),
+      span("V"), tags$em("oboch"),
+      span("prípadoch je zaradenie úseku do jeho kategórie nehodovosti nasledovné:"),
+      tags$ul(
+        tags$li(strong("Vysoká nehodovosť:", style = "color: red;"), 
+                span("Najnehodovejších 0-10 % cestnej siete")), 
+        tags$li(strong("Nadpriemerná nehodovosť:", style = "color: #db7b2b;"), 
+                span("Najnehodovejších 10-25 % cestnej siete")), 
+        tags$li(strong("Priemerná nehodovosť:", style = "color: #e7b416;"), 
+                span("Najnehodovejších 25-50 % cestnej siete")), 
+        tags$li(strong("Podpriemerná nehodovosť:", style = "color: #99c140;"), 
+                span("Najnehodovejších 50-75 % cestnej siete")), 
+        tags$li(strong("Nízka nehodovosť:", style = "color: #2dc937;"), 
+                span("Zvyšných 25 % cestnej siete"))
+      ),
+      easyClose = TRUE,
+      footer = modalButton("Zavrieť")
     ))
   })
   
