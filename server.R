@@ -252,7 +252,7 @@ function(input, output) {
     showModal(modalDialog(
       title = "Mapa cestnej nehodovosti",
       tagList("Dáta o cestnej nehodovosti sú generované zo štatistiky", 
-              a("Ministerstva Vnútra", href="https://www.minv.sk/?kompletna-statistika",
+              a("Ministerstva vnútra", href="https://www.minv.sk/?kompletna-statistika",
                 target="_blank")),
       span("a sú k dispozícii pre roky 2012 - 2022. 
            Nehody sú zverejnené pre cesty I. a II. triedy, 
@@ -262,7 +262,7 @@ function(input, output) {
       span("Účelom mapy"), strong("nie je"),
       span("presné zobrazenie geografickej polohy dopravných nehôd."), br(), br(),
       tagList("Údaje o cestách sú z databázy", 
-              a("Slovenskej Správy Ciest", href="https://www.cdb.sk/sk/statisticke-vystupy.alej",
+              a("Slovenskej správy ciest", href="https://www.cdb.sk/sk/statisticke-vystupy.alej",
                 target="_blank")),
       tagList("pod licenciou", 
               a("Creative Commons Attribution", href="http://opendefinition.org/licenses/cc-by/",
