@@ -266,6 +266,11 @@ function(input, output) {
                 target="_blank")),
       tagList("pod licenciou", 
               a("Creative Commons Attribution", href="http://opendefinition.org/licenses/cc-by/",
+                target="_blank")), br(), 
+      tags$hr(),
+      tagList("Viac informácií:", 
+              a("metodika", 
+                href="https://doc-0s-2c-prod-03-apps-viewer.googleusercontent.com/viewer2/prod-03/pdf/9jn1e0jcb4vuhlg2rg91j1rkel93775u/8nna8nok634qqfmts73ja8odbu04ouul/1669215300000/3/*/APznzab4HD1EQdums1vtxbOEmqMoL76lYDiLmBZC2nVV60svTtf7vkWOGwlnar5z0wXdCLoxLVqRpawwu4uWXyFKsSnUsxWruHyAb83pe-HVYbNzeqFXovfH0SwB9SmDKYL2RhV1lJ7NqJFd7zAwzghSrwZ6OqVLsgajm2ZYrvJdi9bloE66tpgWom42WpU8srb1Jp3lLt2eHs_OLoWT0LKJeBUr_y0Yd1u51PtcqqL2J2BKGOlyli-GJUSdVH6j0J7dxvf7hnzMolf-M0pt0aQ4z5d1zLY-DIf9f1CMBIO181Sl73D6wRXJ61r58rmQYTrinbk5vY_BDHoGWfn8AQroWWFE_QK21i8sJOIAHtxfUff7vQ-h1I-pFlwPRRbvy-Sj6z0kO4uE?authuser",
                 target="_blank")),
       easyClose = TRUE,
       footer = modalButton("Zavrieť")
@@ -303,16 +308,13 @@ function(input, output) {
         tags$li(strong("Nízka nehodovosť:", style = "color: #2dc937;"), 
                 span("Zvyšných 25 % cestnej siete"))
       ),
+      tags$hr(),
+      tagList("Viac informácií:", 
+              a("metodika", 
+                href="https://doc-0s-2c-prod-03-apps-viewer.googleusercontent.com/viewer2/prod-03/pdf/9jn1e0jcb4vuhlg2rg91j1rkel93775u/8nna8nok634qqfmts73ja8odbu04ouul/1669215300000/3/*/APznzab4HD1EQdums1vtxbOEmqMoL76lYDiLmBZC2nVV60svTtf7vkWOGwlnar5z0wXdCLoxLVqRpawwu4uWXyFKsSnUsxWruHyAb83pe-HVYbNzeqFXovfH0SwB9SmDKYL2RhV1lJ7NqJFd7zAwzghSrwZ6OqVLsgajm2ZYrvJdi9bloE66tpgWom42WpU8srb1Jp3lLt2eHs_OLoWT0LKJeBUr_y0Yd1u51PtcqqL2J2BKGOlyli-GJUSdVH6j0J7dxvf7hnzMolf-M0pt0aQ4z5d1zLY-DIf9f1CMBIO181Sl73D6wRXJ61r58rmQYTrinbk5vY_BDHoGWfn8AQroWWFE_QK21i8sJOIAHtxfUff7vQ-h1I-pFlwPRRbvy-Sj6z0kO4uE?authuser",
+                target="_blank")),
       easyClose = TRUE,
       footer = modalButton("Zavrieť")
     ))
   })
-  
-  addResourcePath("nehody_mapa", getwd())
-  
-  output$frame <- renderUI({
-    tags$iframe(style='width:98vw;height:90vh;',
-      src="nehody_mapa/data/the_map.html")
-  })
-  
 }
