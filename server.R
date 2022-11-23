@@ -303,6 +303,9 @@ function(input, output) {
         tags$li(strong("Nízka nehodovosť:", style = "color: #2dc937;"), 
                 span("Zvyšných 25 % cestnej siete"))
       ),
+      tagList("Geografické dáta o úsekoch pochádzajú z", 
+              a("Celoštátneho sčítania dopravy 2015.", href="https://www.ssc.sk/sk/cinnosti/rozvoj-cestnej-siete/dopravne-inzinierstvo.ssc",
+                target="_blank")),
       easyClose = TRUE,
       footer = modalButton("Zavrieť")
     ))
