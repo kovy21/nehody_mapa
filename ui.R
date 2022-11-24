@@ -21,15 +21,13 @@ navbarPage(
            tags$style('
                 #mymap {align: center;
                         margin-top: -1.5%;
-                        margin-bottom: -1.5%;
+                        margin-bottom: -1%;
+                        margin-right: -1%;
+                        margin-left: -1%;
                         }'
            ), 
            
-           # Margin Backup:
-           #margin-right: -1%;
-           #margin-left: -1%;
-           
-           tags$div(id = 'mymap', leafletOutput('map', height="94.25vh")),
+           tags$div(id = 'mymap', leafletOutput('map', height="94vh")),
            
            absolutePanel(top = "50%", left = 20, width = "95%", opacity=0,
                          (column(12,  div(style="display:center-align"),
