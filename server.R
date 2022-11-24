@@ -45,11 +45,6 @@ function(input, output) {
     geo_all
   }, ignoreNULL=FALSE)
   
-  observe({output$stats <- renderText({
-    paste("Dané obdobie má", 
-          dim(filter_data())[1],"nehôd.") 
-  })})
-  
   output$map <- renderLeaflet({
     leaflet(df_acc_sk, options = leafletOptions(preferCanvas=TRUE,  minZoom = 8)) %>% 
       addTiles() %>%
