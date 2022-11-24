@@ -22,10 +22,12 @@ navbarPage(
                 #mymap {align: center;
                         margin-top: -1.5%;
                         margin-bottom: -1.5%;
-                        margin-right: -1%;
-                        margin-left: -1%;
                         }'
-           ),
+           ), 
+           
+           # Margin Backup:
+           #margin-right: -1%;
+           #margin-left: -1%;
            
            tags$div(id = 'mymap', leafletOutput('map', height="94.25vh")),
            
