@@ -9,6 +9,7 @@ library(rsconnect)
 library(shinycssloaders)
 library(shinyWidgets)
 library(sf)
+library(data.table)
 
 #######################################################
 
@@ -229,13 +230,32 @@ function(input, output) {
   }
   )
   
+  observeEvent(input$dwnld, {
+    showModal(modalDialog(
+      title = "Stiahnuť dáta",
+      "Prevziať je možné:",
+      tags$ul(
+        tags$li(strong("Celý dataset:"),
+                paste(dim(df_acc_sk)[1],"nehôd")), 
+        tags$li(strong("Aktuálny výber:"), 
+                paste(dim(filter_data())[1],"nehôd")),
+      ),
+      footer = tagList(
+        downloadButton(outputId = "downloadW", "Celý dataset"),
+        downloadButton(outputId = "downloadP", "Aktuálny výber"),
+        modalButton("Zavrieť")
+      ),
+      easyClose = TRUE
+    ))
+  })
+  
   output$downloadP <- downloadHandler(
     filename = function() {
       paste("nehody-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      write.csv(filter_data(), 
-                file)
+      on.exit(removeModal())
+      write.csv(filter_data(), file)
     }
   )
   
@@ -244,6 +264,7 @@ function(input, output) {
       paste("nehody-vsetky-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
+      on.exit(removeModal())
       write.csv(df_acc_sk, file)
     }
   )
@@ -266,6 +287,10 @@ function(input, output) {
                 target="_blank")),
       tagList("pod licenciou", 
               a("Creative Commons Attribution", href="http://opendefinition.org/licenses/cc-by/",
+                target="_blank")),
+      tags$hr(),
+      tagList("Zdroj:", 
+              a("GitHub", href="https://github.com/kovy21/nehody_mapa",
                 target="_blank")),
       easyClose = TRUE,
       footer = modalButton("Zavrieť")
@@ -304,7 +329,15 @@ function(input, output) {
                 span("Zvyšných 25 % cestnej siete"))
       ),
       tagList("Geografické dáta o úsekoch pochádzajú z", 
-              a("Celoštátneho sčítania dopravy 2015.", href="https://www.ssc.sk/sk/cinnosti/rozvoj-cestnej-siete/dopravne-inzinierstvo.ssc",
+              a("Celoštátneho sčítania dopravy 2015", 
+                href="https://www.ssc.sk/sk/cinnosti/rozvoj-cestnej-siete/dopravne-inzinierstvo.ssc",
+                target="_blank"), 
+              "od SSC pod licenciou", 
+              a("Creative Commons Attribution", 
+                href="http://opendefinition.org/licenses/cc-by/", target="_blank")),
+      tags$hr(),
+      tagList("Zdroj:", 
+              a("GitHub", href="https://github.com/kovy21/nehody_mapa",
                 target="_blank")),
       easyClose = TRUE,
       footer = modalButton("Zavrieť")
