@@ -9,6 +9,7 @@ library(rsconnect)
 library(shinycssloaders)
 library(shinyWidgets)
 library(sf)
+library(openxlsx)
 
 #######################################################
 
@@ -245,21 +246,21 @@ function(input, output) {
   
   output$downloadP <- downloadHandler(
     filename = function() {
-      paste("nehody-", Sys.Date(), ".csv", sep="")
+      paste("nehody-", Sys.Date(), ".xlsx", sep="")
     },
     content = function(file) {
       on.exit(removeModal()) # Okno sa po stiahnutí zavrie
-      write.csv(filter_data(), file)
+      write.xlsx(filter_data(), file) # Alebo write.csv 
     }
   )
   
   output$downloadW <- downloadHandler(
     filename = function() {
-      paste("nehody-vsetky-", Sys.Date(), ".csv", sep="")
+      paste("nehody-vsetky-", Sys.Date(), ".xlsx", sep="")
     },
     content = function(file) {
       on.exit(removeModal()) 
-      write.csv(df_acc_sk, file)
+      write.xlsx(df_acc_sk, file) 
     }
   )
   
