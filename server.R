@@ -21,9 +21,17 @@ geo_all = st_read("./data/geo_all.json")
 
 #######################################################
 
-function(input, output) {
+function(input, output, session) {
   
-  filter_data <- eventReactive(input$load, {Sys.sleep(1)
+  observe({ # Zmena action button - Načitať xx nehôd (výber)
+    x <- input$slider
+    len = df_acc_sk[df_acc_sk$Dátum >= as.Date(paste(as.character(x[1]), "-01-01", sep=""))  & 
+                      df_acc_sk$Dátum <= as.Date(paste(as.character(x[2]), "-12-31", sep="")),]
+    updateActionButton(session, "load",
+                       label = paste("Načítať", dim(len)[1], "nehôd"))
+  })
+  
+  filter_data <- eventReactive(input$load, {Sys.sleep(1) # Menší dataframe s vybratými rokmi
     x <- input$slider
     if(x[2]==2022){
       df_acc_sk[df_acc_sk$Dátum >= as.Date(paste(as.character(x[1]), "-01-01", sep=""))  & 
@@ -34,9 +42,10 @@ function(input, output) {
     }
   }, ignoreNULL=FALSE)
   
-  filter_geo_all <- eventReactive(input$load_sec, {Sys.sleep(1)
+  # Absolútna/Relatívna nehodovosť
+  filter_geo_all <- eventReactive(input$load_sec, {Sys.sleep(1) 
     y <- input$type_sec
-    if(y=="abs"){
+    if(y=="abs"){ 
       geo_all$col = geo_all$color_raw
       geo_all$lvl = geo_all$stupen_raw
     }else{
@@ -46,6 +55,7 @@ function(input, output) {
     geo_all
   }, ignoreNULL=FALSE)
   
+  # Mapa nehôd
   output$map <- renderLeaflet({
     leaflet(df_acc_sk, options = leafletOptions(preferCanvas=TRUE,  minZoom = 8)) %>% 
       addTiles() %>%
@@ -67,6 +77,7 @@ function(input, output) {
     }
   )
   
+  # Update mapy nehôd
   observe({
     
     shinyjs::showElement(id = 'loading')
@@ -122,6 +133,7 @@ function(input, output) {
   }
   )
   
+  # Mapa úsekov
   output$sec <- renderLeaflet({
     leaflet(geo_all, options = leafletOptions(preferCanvas=TRUE,  minZoom = 8)) %>% 
       setView(lng = 19.65, lat = 48.675, zoom = 8) %>%
@@ -181,6 +193,7 @@ function(input, output) {
       }
     )
   
+  # Update mapy úsekov
   observe({
     
     shinyjs::showElement(id = 'loading_sec')
@@ -225,16 +238,19 @@ function(input, output) {
   }
   )
   
+  # Sťahovanie údajov o nehodách
   observeEvent(input$dwnld, {
     showModal(modalDialog(
       title = "Stiahnuť dáta",
       "Prevziať je možné:",
+      br(),
       tags$ul(
         tags$li(strong("Celý dataset:"),
                 paste(dim(df_acc_sk)[1],"nehôd")), 
         tags$li(strong("Aktuálny výber:"), 
                 paste(dim(filter_data())[1],"nehôd")),
       ),
+      tags$em("Prevzatie súborov môže trvať niekoľko sekúnd"),
       footer = tagList(
         downloadButton(outputId = "downloadW", "Celý dataset"),
         downloadButton(outputId = "downloadP", "Aktuálny výber"),
@@ -264,6 +280,7 @@ function(input, output) {
     }
   )
   
+  # Vysvetlivky k nehodám
   observeEvent(input$show, {
     showModal(modalDialog(
       title = "Mapa cestnej nehodovosti",
@@ -292,6 +309,7 @@ function(input, output) {
     ))
   })
   
+  # Vysvetlivky k úsekom
   observeEvent(input$sectionshow, {
     showModal(modalDialog(
       title = "Nehodovosť cestných úsekov",
