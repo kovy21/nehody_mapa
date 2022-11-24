@@ -21,15 +21,15 @@ geo_all = st_read("./data/geo_all.json")
 
 #######################################################
 
-function(input, output, session) {
+function(input, output) { # session
   
-  observe({ # Zmena action button - Načitať xx nehôd (výber)
-    x <- input$slider
-    len = df_acc_sk[df_acc_sk$Dátum >= as.Date(paste(as.character(x[1]), "-01-01", sep=""))  & 
-                      df_acc_sk$Dátum <= as.Date(paste(as.character(x[2]), "-12-31", sep="")),]
-    updateActionButton(session, "load",
-                       label = paste("Načítať", dim(len)[1], "nehôd"))
-  })
+  #observe({ # Zmena action button - Načitať xx nehôd (výber)
+    #x <- input$slider
+    #len = df_acc_sk[df_acc_sk$Dátum >= as.Date(paste(as.character(x[1]), "-01-01", sep=""))  & 
+     #                 df_acc_sk$Dátum <= as.Date(paste(as.character(x[2]), "-12-31", sep="")),]
+    #updateActionButton(session, "load",
+     #                 label = paste("Načítať", dim(len)[1], "nehôd"))
+  #})
   
   filter_data <- eventReactive(input$load, {Sys.sleep(1) # Menší dataframe s vybratými rokmi
     x <- input$slider
@@ -171,7 +171,7 @@ function(input, output, session) {
                                   "<br><strong>Dĺžka úseku</strong>: ", round(len_km, 2), " km",
                                   "<br><strong>Ťažké nehody</strong>: ", heavy_acc_real, 
                                   "<br><strong>Intenzita dopravy</strong>: ", format(round(rpdi,0), big.mark=" "), " voz. denne",
-                                  "<br><strong>Hustota nehôd</strong>: ", round(car_raw,2), " nehôd/km (za rok)", 
+                                  "<br><strong>Hustota nehôd</strong>: ", round(car_raw,2), " ťažkých nehôd/km (za rok)", 
                                   sep=""),
                    
                    options=popupOptions(maxWidth=200, keepInView = TRUE),
@@ -213,7 +213,7 @@ function(input, output, session) {
                                   "<br><strong>Dĺžka úseku</strong>: ", round(len_km, 2), " km",
                                   "<br><strong>Ťažké nehody</strong>: ", heavy_acc_real, 
                                   "<br><strong>Intenzita dopravy</strong>: ", format(round(rpdi,0), big.mark=" "), " voz. denne",
-                                  "<br><strong>Hustota nehôd</strong>: ", round(car_raw,2), " nehôd/km (za rok)", 
+                                  "<br><strong>Hustota nehôd</strong>: ", round(car_raw,2), " ťažkých nehôd/km (za rok)", 
                                   sep=""),
                    
                    options=popupOptions(maxWidth=200, keepInView = TRUE),
