@@ -16,4 +16,8 @@ Keďže pre jednotlivé nehody nie sú zverejnené ich GPS súradnice (iba infor
 ### Interpolácia dopravných nehôd:
 ![222](https://user-images.githubusercontent.com/47066564/203774392-87039968-d1a7-41a1-83af-e74707f1bf8a.png)
 
-### Nehodové úseky
+---
+
+## Nehodové úseky
+
+Analýza definovala cestný úsek ako medzikrižovatkový úsek cestnej komunikácie medzi danou komunikáciou a inými cestami II. a vyššej triedy. Pre účely analýzy bola nehodovosť vypočítaná na úsekoch ciest I. a II. triedy, rovnako ako aj na úsekoch rýchlostných ciest, ktoré slúžia ako obchvaty obcí a miest (napr. R4 v Svidníku). Nehodovosť daného úseku je vypočítaná v absolútnych aj relatívnych číslach. Geografické dáta o úsekoch pochádzajú z [Celoštátneho sčítania dopravy](https://www.ssc.sk/sk/cinnosti/rozvoj-cestnej-siete/dopravne-inzinierstvo.ssc) 2015 od SSC pod licenciou [Creative Commons Attribution](http://opendefinition.org/licenses/cc-by/).
