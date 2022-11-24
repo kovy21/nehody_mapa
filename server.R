@@ -9,7 +9,6 @@ library(rsconnect)
 library(shinycssloaders)
 library(shinyWidgets)
 library(sf)
-library(data.table)
 
 #######################################################
 
@@ -254,7 +253,7 @@ function(input, output) {
       paste("nehody-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      on.exit(removeModal())
+      on.exit(removeModal()) # Okno sa po stiahnutí zavrie
       write.csv(filter_data(), file)
     }
   )
@@ -264,7 +263,7 @@ function(input, output) {
       paste("nehody-vsetky-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      on.exit(removeModal())
+      on.exit(removeModal()) 
       write.csv(df_acc_sk, file)
     }
   )
