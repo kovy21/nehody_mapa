@@ -21,15 +21,7 @@ geo_all = st_read("./data/geo_all.json")
 
 #######################################################
 
-function(input, output) { # session
-  
-  #observe({ # Zmena action button - Načitať xx nehôd (výber)
-    #x <- input$slider
-    #len = df_acc_sk[df_acc_sk$Dátum >= as.Date(paste(as.character(x[1]), "-01-01", sep=""))  & 
-     #                 df_acc_sk$Dátum <= as.Date(paste(as.character(x[2]), "-12-31", sep="")),]
-    #updateActionButton(session, "load",
-     #                 label = paste("Načítať", dim(len)[1], "nehôd"))
-  #})
+function(input, output) {
   
   filter_data <- eventReactive(input$load, {Sys.sleep(1) # Menší dataframe s vybratými rokmi
     x <- input$slider
@@ -250,7 +242,7 @@ function(input, output) { # session
         tags$li(strong("Aktuálny výber:"), 
                 paste(dim(filter_data())[1],"nehôd")),
       ),
-      tags$em("Prevzatie súborov môže trvať niekoľko sekúnd"),
+      strong("Pozor:"), tags$em("Prevzatie súborov môže trvať niekoľko sekúnd"),
       footer = tagList(
         downloadButton(outputId = "downloadW", "Celý dataset"),
         downloadButton(outputId = "downloadP", "Aktuálny výber"),
