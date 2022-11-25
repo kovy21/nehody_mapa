@@ -13,6 +13,9 @@ Dáta o cestných nehodách sú generované zo štatistiky [Ministerstva vnútra
 
 Keďže pre jednotlivé nehody nie sú zverejnené ich GPS súradnice (iba informácie o kilometri danej cestnej komunikácie, na ktorom sa nehoda udiala), ich zemepisná poloha je vypočítavaná dodatočne, pomocou interpolácie, teda umiestnením nehodovej udalosti medzi dva najbližšie referenčné body na danej ceste (cestné uzly/dopravné značky). Účelom mapy nie je presné zobrazenie geografickej polohy dopravných nehôd. Údaje o cestných uzloch a dopravných značkách pochádzajú z databázy [Slovenskej správy ciest](https://www.cdb.sk/sk/statisticke-vystupy.alej) pod licenciou [Creative Commons Attribution](http://opendefinition.org/licenses/cc-by/). Pre cesty, ktorých číslo (napr. I/50) alebo kilometrovníkové staničenie (napr. I/66) v danom období menilo, je staničenie dopravných nehôd prepočítané. 
 
+<img width="943" alt="Screenshot 2022-11-25 at 15 09 14" src="https://user-images.githubusercontent.com/47066564/204002379-1a7b4c79-c067-4da8-a412-dea6cb74862b.png">
+
+
 ## Nehodové úseky
 
 Analýza definovala cestný úsek ako medzikrižovatkový úsek cestnej komunikácie medzi danou komunikáciou a inými cestami II. a vyššej triedy. Pre účely analýzy bola nehodovosť vypočítaná na úsekoch ciest I. a II. triedy, rovnako ako aj na úsekoch rýchlostných ciest, ktoré slúžia ako obchvaty obcí a miest (napr. R4 v Svidníku). Nehodovosť daného úseku je vypočítaná v absolútnych aj relatívnych číslach. Geografické dáta o úsekoch pochádzajú z [Celoštátneho sčítania dopravy](https://www.ssc.sk/sk/cinnosti/rozvoj-cestnej-siete/dopravne-inzinierstvo.ssc) 2015 od SSC pod licenciou [Creative Commons Attribution](http://opendefinition.org/licenses/cc-by/).
