@@ -27,3 +27,5 @@ Určená ako počet ťažkých nehôd na úseku za dané obdobie v pomere k dĺ�
 Určená pomocou tzv. critical accident rate , počtu ťažkých dopravných nehôd na danom úseku v pomere k dopravnej intenzite daného úseku.
 
 V oboch prípadoch sú do úvahy brané aj nehody na danej ceste 500 metrov pred a po konci daného úseku pre prípad nepresností určovania ich polohy. Táto pridaná dĺžka je vzatá do úvahy pri výpočtoch oboch štatistík. Nehodové úseky sú zaradené do ich kategórie (vysoká, nadpriemerná, nízka nehodovosť...) podľa kumulatívneho percenta cestnej siete, ktoré pokrývajú.
+
+<img width="895" alt="Screenshot 2022-11-25 at 15 10 00" src="https://user-images.githubusercontent.com/47066564/204002524-012e663e-aeaf-4dd0-bd03-c70f138b795a.png">
