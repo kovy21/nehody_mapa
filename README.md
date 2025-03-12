@@ -3,6 +3,7 @@
 Map of accidents and traffic data in the Slovak republic between 2012 and 2022 *(Further in Slovak)*.
 
 View at: https://kovy217.shinyapps.io/nehody_mapa/ 
+See also the dedicated **Ministry of Finance** page: https://www.mfsr.sk/files/map_radary_point_v2.html
 
 ---
 
